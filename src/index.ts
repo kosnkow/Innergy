@@ -28,7 +28,7 @@ export const updateSelectedServices = (
             deselected = deselected.filter((s) => s !== "TwoDayEvent");
         }
         if (service === "Photography" && isServiceSelected("TwoDayEvent") && !isServiceSelected("VideoRecording")) {
-            deselected =  deselected.filter((s) => s !== "TwoDayEvent");
+            deselected = deselected.filter((s) => s !== "TwoDayEvent");
         }
         return deselected;
     };
@@ -86,7 +86,6 @@ export const calculatePrice = (selectedServices: ServiceType[], selectedYear: Se
         }
 
         basePrice += weddingPrice;
-
     }
 
     if (isBluRaySelected && isVideoSelected) {
@@ -97,11 +96,9 @@ export const calculatePrice = (selectedServices: ServiceType[], selectedYear: Se
         basePrice += yearPrices.twoDayEvent;
     }
 
-
     const maxDiscount = discounts.length > 0 ? Math.max(...discounts) : 0;
 
     const finalPrice = basePrice - maxDiscount;
-
 
     return { basePrice, finalPrice };
 }
