@@ -6,56 +6,49 @@ export const updateSelectedServices = (
     previouslySelectedServices: ServiceType[],
     action: { type: "Select" | "Deselect"; service: ServiceType }
 ): ServiceType[] => {
+    const isServiceSelected = (service: ServiceType) =>
+        previouslySelectedServices.includes(service);
+
+    const shouldSelect = (service: ServiceType): boolean => {
+        if (service === "BlurayPackage" && !isServiceSelected("VideoRecording")) return false;
+        if (
+            service === "TwoDayEvent" &&
+            !isServiceSelected("VideoRecording") &&
+            !isServiceSelected("Photography")
+        )
+            return false;
+        return !isServiceSelected(service);
+    };
+
+    const shouldDeselectRelated = (service: ServiceType, deselected: ServiceType[]) => {
+        if (service === "VideoRecording") {
+            deselected = deselected.filter((s) => s !== "BlurayPackage");
+        }
+        if (service === "VideoRecording" && isServiceSelected("TwoDayEvent") && !isServiceSelected("Photography")) {
+            deselected = deselected.filter((s) => s !== "TwoDayEvent");
+        }
+        if (service === "Photography" && isServiceSelected("TwoDayEvent") && !isServiceSelected("VideoRecording")) {
+            deselected =  deselected.filter((s) => s !== "TwoDayEvent");
+        }
+        return deselected;
+    };
+
     switch (action.type) {
         case "Select":
-
-            if(action.service === "BlurayPackage" && !previouslySelectedServices.includes("VideoRecording"))
-                return previouslySelectedServices;
-
-            if(action.service === "TwoDayEvent" && (!previouslySelectedServices.includes("VideoRecording") && !previouslySelectedServices.includes("Photography") ))
-                return previouslySelectedServices;
-
-            // Add the service if it is not already included
-            if (!previouslySelectedServices.includes(action.service)) {
-                return [...previouslySelectedServices, action.service];
-            }
-            return previouslySelectedServices;
+            return shouldSelect(action.service)
+                ? [...previouslySelectedServices, action.service]
+                : previouslySelectedServices;
 
         case "Deselect":
-            // Remove the service if it is currently included
             let deselectedServices = previouslySelectedServices.filter(
                 (service) => service !== action.service
             );
-
-            if(action.service == "VideoRecording"){
-                if(deselectedServices.includes("BlurayPackage")){
-                    deselectedServices = deselectedServices.filter(
-                        (service) => service !== "BlurayPackage"
-                    );
-                }
-            }
-
-            if(action.service == "VideoRecording" && deselectedServices.includes("TwoDayEvent") && !deselectedServices.includes("Photography"))
-                {
-                    deselectedServices = deselectedServices.filter(
-                        (service) => service !== "TwoDayEvent"
-                    );
-                }
-
-            if(action.service == "Photography" && deselectedServices.includes("TwoDayEvent") && !deselectedServices.includes("VideoRecording"))
-                {
-                    deselectedServices = deselectedServices.filter(
-                        (service) => service !== "TwoDayEvent"
-                    );
-                }
-
-            return deselectedServices;
+            return shouldDeselectRelated(action.service, deselectedServices);
 
         default:
             return previouslySelectedServices;
     }
 };
-
 export const calculatePrice = (selectedServices: ServiceType[], selectedYear: ServiceYear): { basePrice: number, finalPrice: number } => {
     let basePrice = 0;
     let discounts: number[] = [];
