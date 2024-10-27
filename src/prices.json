@@ -1,0 +1,29 @@
+{
+    "2020": {
+      "photography": 1700,
+      "video": 1700,
+      "photoVideoPackage": 2200,
+      "weddingSession": 600,
+      "weddingSessionWithPackage": 300,
+      "bluRayPackage": 300,
+      "twoDayEvent": 400
+    },
+    "2021": {
+      "photography": 1800,
+      "video": 1800,
+      "photoVideoPackage": 2300,
+      "weddingSession": 600,
+      "weddingSessionWithPackage": 300,
+      "bluRayPackage": 300,
+      "twoDayEvent": 400
+    },
+    "2022": {
+      "photography": 1900,
+      "video": 1900,
+      "photoVideoPackage": 2500,
+      "weddingSession": 600,
+      "weddingSessionWithPackage": 300,
+      "bluRayPackage": 300,
+      "twoDayEvent": 400
+    }
+  }
